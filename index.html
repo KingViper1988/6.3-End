@@ -8,8 +8,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/ark-icon-512.png">
-    <link rel="icon" type="image/png" href="/ark-icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/ark-icon-192.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/ark-icon-512.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/ark-icon-192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/ark-icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/ark-icon-512.png">
+    <link rel="shortcut icon" href="/ark-icon-192.png" />
     <title>Ark v2 SillyTavern</title>
     <script>
       window.deferredPWAInstallPrompt = null;
@@ -18,37 +22,9 @@
         window.deferredPWAInstallPrompt = e;
       });
     </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Roboto:wght@300;400;700&family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;600;700&family=Oswald:wght@300;400;700&family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&family=Noto+Sans+Vietnamese:wght@300;400;700&family=Be+Vietnam+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;700&family=IBM+Plex+Mono:wght@300;400;700&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['var(--font-system)', 'Inter', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
-              mono: ['IBM Plex Mono', 'JetBrains Mono', 'monospace'],
-            },
-            colors: {
-              mystic: {
-                950: '#020617', // Slate 950 - Deepest
-                900: '#030712', // Darker than Slate 900
-                800: '#0f172a', // Slate 900
-                accent: '#38bdf8', // Sky 400
-                glow: 'rgba(56, 189, 248, 0.5)'
-              }
-            },
-            animation: {
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            }
-          }
-        }
-      }
-    </script>
     <style>
       :root {
         --font-system: 'Inter', sans-serif;

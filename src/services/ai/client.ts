@@ -2,76 +2,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { AppSettings } from "../../types";
 
-// SAFELY override fetch using defineProperty to handle "only a getter" environments
-const originalFetch = window.fetch;
-try {
-  Object.defineProperty(window, 'fetch', {
-    configurable: true,
-    enumerable: true,
-    get: () => async (...args: [RequestInfo | URL, RequestInit?]) => {
-      const [resource, config] = args;
-      const url = typeof resource === 'string' ? resource : resource instanceof URL ? resource.href : (resource as Request).url;
-      
-      const RETRYABLE_STATUS_CODES = [401, 429, 502, 503, 504];
-      const MAX_RETRIES = 3;
-      
-      const performFetch = async (targetUrl: string, targetConfig: RequestInit | undefined, attempt: number = 0): Promise<Response> => {
-        try {
-          const response = await originalFetch(targetUrl, targetConfig);
-          
-          if (RETRYABLE_STATUS_CODES.includes(response.status) && attempt < MAX_RETRIES) {
-            const delay = response.status === 401 ? 2000 : Math.pow(2, attempt + 1) * 1000;
-            // console.log(`%c[Fetch Guard] 🔄 Thử lại lần ${attempt + 1}/${MAX_RETRIES} (Status: ${response.status}) sau ${delay}ms...`, "color: #f59e0b; font-weight: bold;");
-            await new Promise(resolve => setTimeout(resolve, delay));
-            return performFetch(targetUrl, targetConfig, attempt + 1);
-          }
-          
-          return response;
-        } catch (error) {
-          if (attempt < MAX_RETRIES) {
-            const delay = Math.pow(2, attempt + 1) * 1000;
-            // console.log(`%c[Fetch Guard] 🌐 Lỗi mạng, thử lại lần ${attempt + 1}/${MAX_RETRIES} sau ${delay}ms...`, "color: #ef4444; font-weight: bold;");
-            await new Promise(resolve => setTimeout(resolve, delay));
-            return performFetch(targetUrl, targetConfig, attempt + 1);
-          }
-          throw error;
-        }
-      };
-
-      // Check if this is a Google AI request
-      if (url.includes('generativelanguage.googleapis.com')) {
-        const proxyUrl = (window as Window & { __GEMINI_PROXY_URL__?: string | null }).__GEMINI_PROXY_URL__;
-        
-        if (proxyUrl) {
-          // Strip /v1 or /v1beta from the end of proxyUrl if present
-          const cleanProxy = proxyUrl.trim().replace(/\/+$/, '').replace(/\/v1beta$|\/v1$/, '');
-          const newUrl = url.replace('https://generativelanguage.googleapis.com', cleanProxy);
-          
-          // console.log(`%c[Fetch Guard] 🛡️ Redirecting to Proxy: ${newUrl.substring(0, 80)}...`, "color: #f59e0b; font-weight: bold;");
-          
-          // Ensure headers are set correctly for the proxy
-          const newConfig = { ...config };
-          if (newConfig.headers) {
-            const headers = new Headers(newConfig.headers);
-            // Some proxies need the key in Authorization header
-            const apiKey = headers.get('x-goog-api-key');
-            if (apiKey && !headers.has('Authorization')) {
-              headers.set('Authorization', `Bearer ${apiKey}`);
-            }
-            newConfig.headers = headers;
-          }
-          
-          return performFetch(newUrl, newConfig);
-        }
-      }
-
-      return performFetch(url, config);
-    }
-  });
-} catch (e) {
-  console.error("[AI Client] Không thể ghi đè fetch toàn cục, đang sử dụng fallback SDK.", e);
-}
-
 // Global counter for sequential API key rotation
 let currentKeyIndex = 0;
 
@@ -445,6 +375,74 @@ export const getAiClient = (settings?: AppSettings, forceDirect: boolean = false
     };
   }
 
+  // Define custom fetch wrapper to handle retry and optional proxy routing
+  const retryableFetch = async (url: string, options: RequestInit): Promise<Response> => {
+    // Relative routes or local routes on localhost bypass our rewrite
+    if (url.startsWith('/api/') || url.includes('/api/ai/proxy')) {
+      return fetch(url, options);
+    }
+
+    const RETRYABLE_STATUS_CODES = [401, 429, 502, 503, 504];
+    const MAX_RETRIES = 3;
+
+    const performFetchWithRetry = async (targetUrl: string, targetConfig: RequestInit, attempt: number = 0): Promise<Response> => {
+      try {
+        const response = await fetch(targetUrl, targetConfig);
+
+        if (RETRYABLE_STATUS_CODES.includes(response.status) && attempt < MAX_RETRIES) {
+          const delay = response.status === 401 ? 2000 : Math.pow(2, attempt + 1) * 1000;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return performFetchWithRetry(targetUrl, targetConfig, attempt + 1);
+        }
+
+        return response;
+      } catch (error) {
+        if (attempt < MAX_RETRIES) {
+          const delay = Math.pow(2, attempt + 1) * 1000;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return performFetchWithRetry(targetUrl, targetConfig, attempt + 1);
+        }
+        throw error;
+      }
+    };
+
+    let finalUrl = url;
+    let finalConfig = { ...options };
+
+    // Handle Google API proxy redirection if using a proxy
+    if (useProxy && activeProxy && baseUrl) {
+      const googleBase = 'https://generativelanguage.googleapis.com';
+      if (url.startsWith(googleBase)) {
+        finalUrl = url.replace(googleBase, baseUrl);
+      }
+
+      // Check for x-goog-api-key inside options/headers to place into Authorization header for API proxying
+      const headersObj = new Headers(options.headers);
+      const googleApiKey = headersObj.get('x-goog-api-key');
+      if (googleApiKey && !headersObj.has('Authorization')) {
+        headersObj.set('Authorization', `Bearer ${googleApiKey}`);
+      }
+      finalConfig.headers = headersObj;
+
+      // Use local backend proxy to bypass CORS
+      return fetch('/api/ai/proxy', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-ark-client': 'ark-v2-client'
+        },
+        body: JSON.stringify({
+          url: finalUrl,
+          method: finalConfig.method || 'POST',
+          headers: Object.fromEntries(headersObj.entries()),
+          body: finalConfig.body ? (typeof finalConfig.body === 'string' ? JSON.parse(finalConfig.body) : finalConfig.body) : undefined
+        })
+      });
+    }
+
+    return performFetchWithRetry(finalUrl, finalConfig);
+  };
+
   // CRITICAL: baseUrl/baseURL must be at the top level of the config object for @google/genai SDK
   // We provide both to be safe across different SDK versions
   const genAIConfig: Record<string, unknown> = {
@@ -453,14 +451,9 @@ export const getAiClient = (settings?: AppSettings, forceDirect: boolean = false
 
   if (!apiKey && !baseUrl) {
     console.error(`%c[AI Client] ❌ KHÔNG TÌM THẤY API KEY! (Source: ${source})`, "color: #ef4444; font-weight: bold;");
-  } else {
-    // const maskedKey = apiKey ? `${apiKey.substring(0, 4)}...${apiKey.substring(apiKey.length - 4)}` : "NONE";
-    // console.log(`%c[AI Client] 🔑 Sử dụng key từ: ${source} (${maskedKey})`, "color: #10b981; font-weight: bold;");
   }
 
   if (baseUrl) {
-    // console.log(`%c[AI Client] 🌐 Đang cấu hình PROXY: ${baseUrl}`, "color: #38bdf8; font-weight: bold;");
-    
     // Set at top level - @google/genai uses baseURL (uppercase URL)
     genAIConfig.baseURL = baseUrl;
     genAIConfig.baseUrl = baseUrl;
@@ -473,40 +466,13 @@ export const getAiClient = (settings?: AppSettings, forceDirect: boolean = false
       baseUrl: baseUrl,
       apiEndpoint: baseUrl,
       customHeaders: requestOptions.headers,
-      fetch: (url: string, options: RequestInit) => {
-        // If it's a relative URL or already contains the proxy, let it be
-        if (url.startsWith('/api/')) return fetch(url, options);
-        
-        let targetUrl = url;
-        const googleBase = 'https://generativelanguage.googleapis.com';
-        if (url.startsWith(googleBase)) {
-          targetUrl = url.replace(googleBase, baseUrl!);
-        }
-
-        // Use local backend proxy to bypass CORS
-        return fetch('/api/ai/proxy', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-ark-client': 'ark-v2-client'
-          },
-          body: JSON.stringify({
-            url: targetUrl,
-            method: options.method || 'POST',
-            headers: options.headers,
-            body: options.body ? JSON.parse(options.body as string) : undefined
-          })
-        });
-      }
+      fetch: retryableFetch
     };
-
-    // Task: Force fetch to use the proxy URL by overriding the global fetch if necessary
-    // but for now we rely on the SDK's apiEndpoint property which is most reliable
   } else {
-    // console.log("%c[AI Client] 🔑 Đang sử dụng API KEY TRỰC TIẾP", "color: #10b981; font-weight: bold;");
-    if (Object.keys(requestOptions).length > 0) {
-      genAIConfig.requestOptions = requestOptions;
-    }
+    genAIConfig.requestOptions = {
+      ...requestOptions,
+      fetch: retryableFetch
+    };
   }
 
   const googleAi = new GoogleGenAI(genAIConfig);
@@ -638,4 +604,41 @@ export const getAiClient = (settings?: AppSettings, forceDirect: boolean = false
 
 // Default instance for backward compatibility (uses env key)
 const defaultKey = typeof process !== "undefined" ? (process.env.GEMINI_API_KEY || "no-key") : "no-key";
-export const ai = new GoogleGenAI({ apiKey: defaultKey });
+
+// Simple retry helper for default instance
+const createDefaultFetch = () => {
+  return async (url: string, options: RequestInit): Promise<Response> => {
+    if (url.startsWith('/api/')) return fetch(url, options);
+
+    const RETRYABLE_STATUS_CODES = [401, 429, 502, 503, 504];
+    const MAX_RETRIES = 3;
+
+    const performFetchWithRetry = async (targetUrl: string, targetConfig: RequestInit, attempt: number = 0): Promise<Response> => {
+      try {
+        const response = await fetch(targetUrl, targetConfig);
+        if (RETRYABLE_STATUS_CODES.includes(response.status) && attempt < MAX_RETRIES) {
+          const delay = response.status === 401 ? 2000 : Math.pow(2, attempt + 1) * 1000;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return performFetchWithRetry(targetUrl, targetConfig, attempt + 1);
+        }
+        return response;
+      } catch (error) {
+        if (attempt < MAX_RETRIES) {
+          const delay = Math.pow(2, attempt + 1) * 1000;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return performFetchWithRetry(targetUrl, targetConfig, attempt + 1);
+        }
+        throw error;
+      }
+    };
+
+    return performFetchWithRetry(url, options);
+  };
+};
+
+export const ai = new GoogleGenAI({ 
+  apiKey: defaultKey,
+  requestOptions: {
+    fetch: createDefaultFetch()
+  }
+});
