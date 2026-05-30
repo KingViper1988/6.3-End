@@ -416,10 +416,10 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
       />
 
       {/* Background Controls */}
-      <div className="absolute top-4 left-4 z-50 flex flex-wrap gap-2 max-w-[calc(100%-2rem)]">
+      <div className="absolute top-[calc(env(safe-area-inset-top)+0.75rem)] left-3 right-3 z-50 flex flex-wrap gap-2 sm:left-4 sm:right-auto sm:max-w-[calc(100%-2rem)]">
           <button 
              onClick={() => bgInputRef.current?.click()}
-             className="flex items-center gap-2 px-4 py-2.5 bg-slate-100/90 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-200 shadow-lg backdrop-blur-md border border-slate-300 dark:border-slate-700 transition-all active:scale-95 group"
+             className="flex min-h-11 items-center gap-2 px-3 sm:px-4 py-2.5 bg-slate-100/90 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-800 rounded-xl text-slate-700 dark:text-slate-200 shadow-lg backdrop-blur-md border border-slate-300 dark:border-slate-700 transition-all active:scale-95 group"
              title="Thay đổi ảnh nền"
           >
               <ImageIcon size={16} className="text-mystic-accent" />
@@ -429,7 +429,7 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
           {isInstallable && (
             <button 
               onClick={handleInstallClick}
-              className="flex items-center gap-2 px-4 py-2.5 bg-mystic-accent/20 hover:bg-mystic-accent/40 rounded-xl text-mystic-accent shadow-lg backdrop-blur-md border border-mystic-accent/50 transition-all active:scale-95 group"
+              className="flex min-h-11 items-center gap-2 px-3 sm:px-4 py-2.5 bg-mystic-accent/20 hover:bg-mystic-accent/40 rounded-xl text-mystic-accent shadow-lg backdrop-blur-md border border-mystic-accent/50 transition-all active:scale-95 group"
               title="Cài đặt Ứng dụng"
             >
                 <DownloadCloud size={16} />
@@ -441,7 +441,7 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
             <div className="flex gap-1.5">
               <button 
                 onClick={toggleBlur}
-                className={`p-2.5 rounded-xl border backdrop-blur-md transition-all shadow-lg active:scale-95 ${bgBlur ? 'bg-mystic-accent/20 text-mystic-accent border-mystic-accent/40' : 'bg-slate-900/60 text-slate-400 border-slate-700'}`}
+                className={`min-h-11 min-w-11 p-2.5 rounded-xl border backdrop-blur-md transition-all shadow-lg active:scale-95 ${bgBlur ? 'bg-mystic-accent/20 text-mystic-accent border-mystic-accent/40' : 'bg-slate-900/60 text-slate-400 border-slate-700'}`}
                 title={bgBlur ? "Chuyển sang rõ nét" : "Chuyển sang mờ"}
               >
                   {bgBlur ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -449,7 +449,7 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               
               <button 
                 onClick={resetBg}
-                className="p-2.5 bg-red-900/30 hover:bg-red-900/50 rounded-xl text-red-400 border border-red-900/40 backdrop-blur-md shadow-lg active:scale-95 transition-all"
+                className="min-h-11 min-w-11 p-2.5 bg-red-900/30 hover:bg-red-900/50 rounded-xl text-red-400 border border-red-900/40 backdrop-blur-md shadow-lg active:scale-95 transition-all"
                 title="Xóa ảnh nền"
               >
                   <RotateCcw size={16} />
@@ -501,14 +501,14 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
       </AnimatePresence>
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10">
-        <div className={`min-h-full flex flex-col items-center justify-center p-4 py-12 md:p-8 z-10 w-full transition-opacity duration-1000 ${isIntroing ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`min-h-full flex flex-col items-center justify-center px-4 pb-8 pt-24 sm:pt-28 md:p-8 z-10 w-full transition-opacity duration-1000 ${isIntroing ? 'opacity-0' : 'opacity-100'}`}>
           <motion.div 
             initial={isIntroing ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: -30, filter: 'blur(10px)' }}
             animate={isIntroing ? { opacity: 0 } : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             transition={{ duration: 1.2, ease: "easeOut", delay: isIntroing ? 0 : 0.2 }}
-            className="mb-10 md:mb-16 text-center px-4 flex flex-col items-center"
+            className="mb-6 sm:mb-10 md:mb-16 text-center px-4 flex flex-col items-center"
           >
-            <div className="flex items-center justify-center gap-5 mb-4 font-serif text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter">
+            <div className="flex items-center justify-center gap-3 sm:gap-5 mb-3 sm:mb-4 font-serif text-4xl min-[380px]:text-5xl sm:text-6xl md:text-8xl font-black tracking-tighter">
               {!isIntroing && (
                 <motion.div layoutId="ark-main-logo" className="text-mystic-accent">
                   <ArkLogo size={120} className="w-[64px] h-[64px] md:w-[120px] md:h-[120px]" />
@@ -525,7 +525,7 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
             variants={containerVariants}
             initial={isIntroing ? "hidden" : "visible"}
             animate={isIntroing ? "hidden" : "visible"}
-            className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 w-full max-w-3xl px-2"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 w-full max-w-sm sm:max-w-2xl md:max-w-3xl px-0 sm:px-2"
           >
             {/* Khởi Tạo - Nổi bật hơn */}
             <motion.button 
@@ -533,18 +533,18 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate(GameState.WORLD_CREATION)}
-              className="col-span-2 md:col-span-3 flex flex-row items-center justify-center p-6 md:p-8 rounded-2xl border border-mystic-accent/50 bg-mystic-accent/10 hover:bg-mystic-accent/20 hover:border-mystic-accent hover:shadow-[0_0_30px_rgba(56,189,248,0.2)] backdrop-blur-md transition-all group overflow-hidden relative"
+              className="sm:col-span-2 md:col-span-3 flex flex-row items-center justify-start sm:justify-center p-5 md:p-8 rounded-2xl border border-mystic-accent/50 bg-mystic-accent/10 hover:bg-mystic-accent/20 hover:border-mystic-accent hover:shadow-[0_0_30px_rgba(56,189,248,0.2)] backdrop-blur-md transition-all group overflow-hidden relative"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-mystic-accent/0 via-mystic-accent/10 to-mystic-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="flex items-center gap-6 relative z-10">
-                <div className="p-4 bg-mystic-accent text-mystic-950 rounded-full group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-[0_0_15px_rgba(56,189,248,0.5)]">
+              <div className="flex items-center gap-4 sm:gap-6 relative z-10">
+                <div className="p-3 sm:p-4 bg-mystic-accent text-mystic-950 rounded-full group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 shadow-[0_0_15px_rgba(56,189,248,0.5)]">
                   <Play size={32} fill="currentColor" />
                 </div>
                 <div className="text-left">
-                  <h3 className="font-black text-2xl md:text-3xl tracking-widest uppercase text-mystic-accent drop-shadow-[0_0_10px_rgba(56,189,248,0.3)]">
+                  <h3 className="font-black text-xl sm:text-2xl md:text-3xl tracking-widest uppercase text-mystic-accent drop-shadow-[0_0_10px_rgba(56,189,248,0.3)]">
                     Khởi Tạo
                   </h3>
-                  <p className="text-xs md:text-sm text-mystic-accent/70 font-medium tracking-widest uppercase mt-1">Bắt đầu hành trình mới</p>
+                  <p className="text-[10px] sm:text-xs md:text-sm text-mystic-accent/70 font-medium tracking-wider sm:tracking-widest uppercase mt-1">Bắt đầu hành trình mới</p>
                 </div>
               </div>
             </motion.button>
@@ -556,17 +556,17 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileTap={hasSaves ? { scale: 0.98 } : {}}
               onClick={handleContinue}
               disabled={!hasSaves}
-              className={`flex flex-col items-center justify-center p-6 rounded-2xl border backdrop-blur-md transition-all group relative ${
+              className={`flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border backdrop-blur-md transition-all group relative ${
                 hasSaves 
                 ? 'border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500' 
                 : 'opacity-40 cursor-not-allowed border-slate-800 bg-slate-900/40'
               }`}
             >
-              <div className={`mb-3 p-3 text-slate-300 rounded-full transition-transform duration-500 ${hasSaves ? 'bg-slate-800 group-hover:bg-slate-700 group-hover:text-mystic-accent group-hover:-translate-y-1' : 'bg-slate-800/50'}`}>
+              <div className={`mb-2 sm:mb-3 p-3 text-slate-300 rounded-full transition-transform duration-500 ${hasSaves ? 'bg-slate-800 group-hover:bg-slate-700 group-hover:text-mystic-accent group-hover:-translate-y-1' : 'bg-slate-800/50'}`}>
                 <Clock size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Tiếp Tục</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Tiếp tục cuộc trò chơi</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Tiếp Tục</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Tiếp tục cuộc trò chơi</p>
             </motion.button>
 
             {/* Dữ Liệu */}
@@ -575,13 +575,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleOpenLoadGame}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-mystic-accent group-hover:-translate-y-1">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-mystic-accent group-hover:-translate-y-1">
                 <Database size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Dữ Liệu</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Quản lý File Save</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Dữ Liệu</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Quản lý File Save</p>
             </motion.button>
 
             {/* Đồng Nhân */}
@@ -590,13 +590,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate(GameState.FANFIC)}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-amber-400 group-hover:-translate-y-1">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-amber-400 group-hover:-translate-y-1">
                 <FileText size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Đồng Nhân</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Sáng tác truyện</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Đồng Nhân</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Sáng tác truyện</p>
             </motion.button>
 
             {/* Train Knowledge */}
@@ -605,13 +605,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate(GameState.KNOWLEDGE_TRAIN)}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-emerald-400 group-hover:-translate-y-1">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-emerald-400 group-hover:-translate-y-1">
                 <Upload size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Train Data</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Nhập TXT & Knowledge</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Train Data</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Nhập TXT & Knowledge</p>
             </motion.button>
 
             {/* Thư Viện Nhân Vật (SillyTavern) */}
@@ -620,13 +620,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowCharacterLibrary(true)}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-indigo-400 group-hover:rotate-12">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-indigo-400 group-hover:rotate-12">
                 <Users size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Thư Viện ST</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Nhân Vật SillyTavern</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Thư Viện ST</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Nhân Vật SillyTavern</p>
             </motion.button>
 
             {/* Sơ Đồ Nhân Vật (Custom Character Schema) */}
@@ -635,13 +635,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate(GameState.SCHEMA_DESIGNER)}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-mystic-accent">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-mystic-accent">
                 <Tags size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Bản Sơ Đồ</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Thiết kế Sơ Đồ Custom</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Bản Sơ Đồ</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Thiết kế Sơ Đồ Custom</p>
             </motion.button>
 
             {/* Cấu Hình (Đồng bộ kiểu dáng với các nút khác nhờ span-1) */}
@@ -650,13 +650,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onNavigate(GameState.SETTINGS)}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-amber-400 group-hover:rotate-90">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-amber-400 group-hover:rotate-90">
                 <Settings size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Cấu Hình</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Cấu hình hệ thống</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Cấu Hình</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Cấu hình hệ thống</p>
             </motion.button>
 
             {/* Thông Tin */}
@@ -665,13 +665,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowInfoModal(true)}
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-cyan-400 group-hover:scale-110">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-cyan-400 group-hover:scale-110">
                 <Info size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Thông Tin</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Thông tin bản dựng</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Thông Tin</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Thông tin bản dựng</p>
             </motion.button>
 
             {/* Discord */}
@@ -682,13 +682,13 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               href="https://discord.gg/sPq3Y37eR7"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative cursor-pointer"
+              className="flex flex-col items-center justify-center p-4 sm:p-6 min-h-[104px] sm:min-h-0 rounded-2xl border border-slate-700/50 bg-slate-900/60 hover:bg-slate-800/80 hover:border-slate-500 backdrop-blur-md transition-all group relative cursor-pointer"
             >
-              <div className="mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-[#5865F2] group-hover:scale-110">
+              <div className="mb-2 sm:mb-3 p-3 bg-slate-800 text-slate-300 rounded-full transition-transform duration-500 group-hover:bg-slate-700 group-hover:text-[#5865F2] group-hover:scale-110">
                 <MessageCircle size={28} />
               </div>
-              <h3 className="font-bold text-base tracking-widest uppercase mb-1 text-slate-200">Discord</h3>
-              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Kênh cộng đồng</p>
+              <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase mb-1 text-slate-200">Discord</h3>
+              <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Kênh cộng đồng</p>
             </motion.a>
 
             {/* Ủng Hộ (Donate) */}
@@ -697,16 +697,16 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setShowDonateModal(true)}
-              className="col-span-2 md:col-span-3 flex flex-row items-center justify-center p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-r from-slate-900/60 via-rose-955/20 to-slate-900/60 hover:bg-slate-800/80 hover:border-rose-450 backdrop-blur-md transition-all group relative overflow-hidden"
+              className="sm:col-span-2 md:col-span-3 flex flex-row items-center justify-start sm:justify-center p-4 sm:p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-r from-slate-900/60 via-rose-950/20 to-slate-900/60 hover:bg-slate-800/80 hover:border-rose-400 backdrop-blur-md transition-all group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-rose-500/0 via-rose-500/5 to-rose-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="flex items-center gap-4 relative z-10">
                 <div className="p-3 bg-rose-500/10 text-rose-400 rounded-full group-hover:scale-110 transition-transform duration-500 animate-pulse">
                   <Heart size={24} fill="currentColor" />
                 </div>
-                <div className="text-left">
-                  <h3 className="font-bold text-base tracking-widest uppercase text-slate-200">Ủng Hộ Dự Án (Donate)</h3>
-                  <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-widest">Tiếp lửa cho Bạch Phát Dược Thiên Tôn</p>
+                <div className="text-left min-w-0">
+                  <h3 className="font-bold text-sm sm:text-base tracking-widest uppercase text-slate-200">Ủng Hộ Dự Án (Donate)</h3>
+                  <p className="text-[10px] text-slate-400 font-medium opacity-80 uppercase tracking-wider sm:tracking-widest">Tiếp lửa cho Bạch Phát Dược Thiên Tôn</p>
                 </div>
               </div>
             </motion.button>

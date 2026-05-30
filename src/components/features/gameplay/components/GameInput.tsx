@@ -122,9 +122,9 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
-                        className="px-2 md:px-4 mb-1"
+                        className="px-2 sm:px-3 md:px-4 mb-1"
                     >
-                        <div className="flex flex-col gap-1.5 max-h-[30vh] md:max-h-[40vh] overflow-y-auto pr-1 custom-scrollbar">
+                        <div className="flex flex-col gap-1.5 max-h-[24dvh] sm:max-h-[30vh] md:max-h-[40vh] overflow-y-auto pr-1 custom-scrollbar">
                             {activeChoices.map((choice, idx) => {
                                 // Parse choice for time cost if present (e.g. "Action | 10m")
                                 const parts = choice.split('|');
@@ -160,7 +160,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                                         </button>
                                         <button 
                                             onClick={() => handleSendInternal(displayAction)}
-                                            className="w-9 rounded-md bg-mystic-accent/10 dark:bg-mystic-accent/20 border border-mystic-accent/20 dark:border-mystic-accent/30 hover:bg-mystic-accent hover:text-white text-mystic-accent transition-all flex items-center justify-center shrink-0"
+                                            className="min-h-10 w-10 sm:w-9 rounded-md bg-mystic-accent/10 dark:bg-mystic-accent/20 border border-mystic-accent/20 dark:border-mystic-accent/30 hover:bg-mystic-accent hover:text-white text-mystic-accent transition-all flex items-center justify-center shrink-0"
                                             title="Gửi ngay lập tức"
                                         >
                                             <Send size={12} />
@@ -170,7 +170,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                                                 e.stopPropagation();
                                                 navigator.clipboard.writeText(displayAction);
                                             }}
-                                            className="w-9 rounded-md bg-stone-200/50 dark:bg-slate-800/40 border border-stone-400/30 dark:border-slate-700/30 hover:border-mystic-accent/30 text-stone-400 dark:text-slate-500 hover:text-mystic-accent transition-all flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                            className="min-h-10 w-10 sm:w-9 rounded-md bg-stone-200/50 dark:bg-slate-800/40 border border-stone-400/30 dark:border-slate-700/30 hover:border-mystic-accent/30 text-stone-400 dark:text-slate-500 hover:text-mystic-accent transition-all flex items-center justify-center shrink-0 opacity-0 group-hover:opacity-100 focus:opacity-100"
                                             title="Sao chép"
                                         >
                                             <Copy size={12} />
@@ -184,7 +184,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
             </AnimatePresence>
 
             {/* Input Bar */}
-            <div className="p-1.5 md:p-2 flex flex-col gap-2 border-t border-stone-400 dark:border-slate-800 bg-stone-300/50 dark:bg-slate-900/50 backdrop-blur-sm">
+            <div className="p-2 md:p-2 flex flex-col gap-2 border-t border-stone-400 dark:border-slate-800 bg-stone-300/50 dark:bg-slate-900/50 backdrop-blur-sm">
                 {/* Top Row: Input Area */}
                 <AnimatePresence initial={false}>
                     {!isInputCollapsed && (
@@ -203,7 +203,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                                     onChange={(e) => setInputValue(e.target.value)}
                                     onKeyDown={handleKeyDown}
                                     placeholder="Nhập hành động..."
-                                    className="w-full bg-stone-200 dark:bg-slate-800/80 border border-stone-400 dark:border-slate-700 rounded-lg p-2.5 pb-12 text-stone-800 dark:text-slate-200 outline-none focus:border-mystic-accent focus:bg-stone-100 dark:focus:bg-slate-800 transition-all resize-none h-20 md:h-28 custom-scrollbar font-sans text-sm md:text-base shadow-inner"
+                                    className="w-full bg-stone-200 dark:bg-slate-800/80 border border-stone-400 dark:border-slate-700 rounded-lg p-2.5 pb-12 text-stone-800 dark:text-slate-200 outline-none focus:border-mystic-accent focus:bg-stone-100 dark:focus:bg-slate-800 transition-all resize-none h-24 sm:h-20 md:h-28 custom-scrollbar font-sans text-sm md:text-base shadow-inner"
                                 />
                                 <div className="absolute bottom-2 right-2 flex items-center gap-1.5">
                                     {/* Phục hồi Button (Inside) */}
@@ -214,7 +214,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                                             }
                                         }} 
                                         disabled={isLoading || !lastAction} 
-                                        className="h-8 px-3 text-[10px] font-bold uppercase tracking-tighter bg-stone-300/80 dark:bg-slate-700/80 hover:bg-stone-400 dark:hover:bg-slate-600 text-stone-600 dark:text-slate-300 rounded border border-stone-400 dark:border-slate-600 disabled:opacity-30 transition-all"
+                                        className="h-9 px-3 text-[10px] font-bold uppercase tracking-tighter bg-stone-300/80 dark:bg-slate-700/80 hover:bg-stone-400 dark:hover:bg-slate-600 text-stone-600 dark:text-slate-300 rounded border border-stone-400 dark:border-slate-600 disabled:opacity-30 transition-all"
                                         title="Phục hồi hành động gần nhất"
                                     >
                                         Phục hồi
@@ -224,7 +224,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                                         id="send_btn"
                                         onClick={() => handleSendInternal()} 
                                         disabled={isLoading || !inputValue.trim()} 
-                                        className="h-8 w-12 flex items-center justify-center bg-mystic-accent hover:bg-mystic-accent-light text-white rounded shadow-sm disabled:opacity-30 transition-all"
+                                        className="h-9 w-12 flex items-center justify-center bg-mystic-accent hover:bg-mystic-accent-light text-white rounded shadow-sm disabled:opacity-30 transition-all"
                                         title="Gửi hành động"
                                     >
                                         {isLoading ? <Loader2 size={16} className="animate-spin" /> : <Send size={16} />}
@@ -236,8 +236,8 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                 </AnimatePresence>
 
                 {/* Bottom Row: Controls */}
-                <div className="flex gap-1 items-center w-full overflow-x-auto no-scrollbar pb-0.5">
-                    <div className="flex items-center gap-1 flex-1 justify-center">
+                <div className="flex flex-col sm:flex-row gap-1.5 items-stretch sm:items-center w-full pb-0.5">
+                    <div className="flex items-center gap-1 flex-1 justify-start sm:justify-center overflow-x-auto no-scrollbar">
                         {/* Send Button (Only when collapsed) */}
                         {isInputCollapsed && (
                             <Button 
@@ -257,7 +257,7 @@ const GameInput = forwardRef<GameInputRef, GameInputProps>(({
                     {/* Toggle Input Button - Fills remaining space */}
                     <button 
                         onClick={onToggleCollapse}
-                        className={`h-9 md:h-10 px-3 rounded border transition-all flex items-center justify-center gap-2 flex-1 shadow-sm min-w-[40px] ${
+                        className={`h-9 md:h-10 px-3 rounded border transition-all flex items-center justify-center gap-2 w-full sm:w-auto sm:flex-1 shadow-sm min-w-[40px] ${
                             isInputCollapsed 
                             ? 'bg-mystic-accent/10 border-mystic-accent/30 text-mystic-accent' 
                             : 'bg-stone-200 dark:bg-slate-800 border-stone-400 dark:border-slate-700 text-stone-500'
