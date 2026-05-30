@@ -10,20 +10,22 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['ark-icon-512.png', 'zlp-1779461952269.jpg'],
+      includeAssets: ['ark-icon-192.png', 'ark-icon-512.png', 'zlp-1779461952269.jpg'],
       devOptions: {
         enabled: true
       },
+      manifestFilename: 'manifest.json',
       manifest: {
         name: 'ARK V5 SillyTavern',
         short_name: 'ARK V5',
         description: 'Chơi game nhập vai với AI',
         theme_color: '#0f172a',
         background_color: '#020617',
-        display: 'fullscreen',
+        display: 'standalone',
+        start_url: '/',
         icons: [
           {
-            src: '/ark-icon-512.png',
+            src: '/ark-icon-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any'
@@ -32,7 +34,7 @@ export default defineConfig({
             src: '/ark-icon-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable'
+            purpose: 'any maskable'
           }
         ]
       },
