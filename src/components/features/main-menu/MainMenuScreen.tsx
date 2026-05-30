@@ -89,6 +89,11 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
       setIsInstallable(true);
     };
 
+    if ((window as any).deferredPWAInstallPrompt) {
+      setDeferredPrompt((window as any).deferredPWAInstallPrompt);
+      setIsInstallable(true);
+    }
+
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
     return () => {
