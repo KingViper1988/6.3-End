@@ -106,10 +106,10 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#0d0f14] text-slate-100 font-sans relative overflow-hidden">
+        <div className="flex flex-col h-full bg-[#0d0f14] text-slate-100 font-sans relative overflow-y-auto md:overflow-hidden overflow-x-hidden">
             {/* Top Navigation Panel */}
-            <div className="flex-none h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900/40 backdrop-blur-md relative z-10">
-                <div className="flex items-center gap-3">
+            <div className="flex-none min-h-16 border-b border-slate-800 flex items-center justify-between gap-3 px-4 md:px-6 py-3 md:py-0 bg-slate-900/40 backdrop-blur-md relative z-10">
+                <div className="flex items-center gap-2 md:gap-3 min-w-0">
                     <button 
                         onClick={() => onNavigate(GameState.MENU)}
                         className="p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
@@ -121,15 +121,15 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                     <div className="p-2 bg-gradient-to-tr from-indigo-500/10 to-mystic-accent/10 text-mystic-accent border border-mystic-accent/20 rounded-xl">
                         <Tags size={18} />
                     </div>
-                    <div>
-                        <h2 className="text-sm font-black uppercase tracking-wider text-slate-150 leading-none">Bản Thiết Kế Sơ Đồ Custom</h2>
-                        <p className="text-[10px] text-slate-400 font-semibold tracking-wide mt-1">
+                    <div className="min-w-0">
+                        <h2 className="text-xs md:text-sm font-black uppercase tracking-wider text-slate-150 leading-tight break-words">Bản Thiết Kế Sơ Đồ Custom</h2>
+                        <p className="text-[10px] text-slate-400 font-semibold tracking-wide mt-1 line-clamp-2">
                             Tạo dựng, chỉnh sửa cấu trúc & bối cảnh thuộc tính bọc nhân vật hoàn chỉnh
                         </p>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-2">
                     {editStatus && (
                         <div className="px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-lg flex items-center gap-1.5 animate-pulse">
                             <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
@@ -146,10 +146,10 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
             </div>
 
             {/* Main Workspace Body */}
-            <div className="flex-1 overflow-hidden flex flex-col md:flex-row relative z-10">
+            <div className="flex-none md:flex-1 overflow-visible md:overflow-hidden flex flex-col md:flex-row relative z-10 min-w-0">
                 
                 {/* Left Panel: Schema Selection & Creation list */}
-                <div className="w-full md:w-80 border-r border-slate-850 bg-slate-950/30 flex flex-col p-5 space-y-4">
+                <div className="w-full md:w-80 md:h-auto border-b md:border-b-0 md:border-r border-slate-850 bg-slate-950/30 flex flex-col p-4 md:p-5 space-y-4 flex-none md:shrink-0 min-w-0">
                     <div className="space-y-1">
                         <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                             <Tags size={13} className="text-mystic-accent" />
@@ -158,7 +158,7 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                         <p className="text-[10px] text-slate-500 font-medium">Bấm chọn một sơ đồ để bắt đầu can thiệp thủ thuật</p>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                    <div className="max-h-[42dvh] md:max-h-none md:flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
                         {templates.map(t => {
                             const isSelected = t.id === designerSchemaId;
                             return (
@@ -190,7 +190,7 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                     </div>
 
                     {/* Bottom Action buttons */}
-                    <div className="pt-2 border-t border-slate-850 space-y-2.5">
+                    <div className="pt-2 border-t border-slate-850 space-y-2.5 flex-none">
                         <button
                             type="button"
                             onClick={() => {
@@ -233,12 +233,12 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                 </div>
 
                 {/* Right Panel: Active Schema Designer Workspace */}
-                <div className="flex-1 bg-slate-900/10 flex flex-col overflow-hidden">
+                <div className="flex-none md:flex-1 bg-slate-900/10 flex flex-col overflow-visible md:overflow-hidden min-w-0">
                     {activeDesignerSchema ? (
-                        <div className="flex-1 flex flex-col overflow-hidden">
+                        <div className="flex-none md:flex-1 flex flex-col overflow-visible md:overflow-hidden min-w-0">
                             {/* Editor Area Top Panel - Name and Description of active Schema */}
-                            <div className="p-6 border-b border-slate-850/60 bg-slate-950/15 flex flex-col md:flex-row md:items-center justify-between gap-4 flex-none">
-                                <div className="flex-grow space-y-3 max-w-xl">
+                            <div className="p-4 md:p-6 border-b border-slate-850/60 bg-slate-950/15 flex flex-col md:flex-row md:items-center justify-between gap-4 flex-none min-w-0">
+                                <div className="flex-grow space-y-3 max-w-xl min-w-0">
                                     <div className="space-y-1">
                                         <label className="text-[9px] uppercase font-bold text-slate-500 font-mono tracking-widest">Tên Sơ đồ bối cảnh</label>
                                         <input
@@ -262,8 +262,8 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                                 </div>
 
                                 {/* Import / Export actions of active schema */}
-                                <div className="flex md:flex-col gap-2 flex-none justify-end">
-                                    <div className="flex gap-2.5">
+                                <div className="flex flex-col sm:flex-row md:flex-col gap-2 flex-none justify-end min-w-0">
+                                    <div className="flex flex-wrap gap-2.5">
                                         {/* Export Button */}
                                         <button
                                             type="button"
@@ -283,7 +283,7 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                                                     setTimeout(() => setImportError(null), 3000);
                                                 }
                                             }}
-                                            className="flex items-center gap-1.5 px-3 py-2 bg-slate-950 hover:bg-slate-850 text-slate-300 border border-slate-800 rounded-lg text-[10px] uppercase font-bold transition-all cursor-pointer"
+                                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-950 hover:bg-slate-850 text-slate-300 border border-slate-800 rounded-lg text-[10px] uppercase font-bold transition-all cursor-pointer min-w-0"
                                             title="Tải cấu trúc sơ đồ hiện hành về máy tính"
                                         >
                                             <Download size={12} />
@@ -336,7 +336,7 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                                         <button
                                             type="button"
                                             onClick={() => fileInputRef.current?.click()}
-                                            className="flex items-center gap-1.5 px-3 py-2 bg-slate-950 hover:bg-slate-850 text-slate-300 border border-slate-800 rounded-lg text-[10px] uppercase font-bold transition-all cursor-pointer"
+                                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-slate-950 hover:bg-slate-850 text-slate-300 border border-slate-800 rounded-lg text-[10px] uppercase font-bold transition-all cursor-pointer min-w-0"
                                             title="Nạp cấu trúc file sơ đồ bọc JSON vào ARK"
                                         >
                                             <Upload size={12} />
@@ -358,8 +358,8 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                             </div>
 
                             {/* Schema Configuration Field Grid list area */}
-                            <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
-                                <div className="flex justify-between items-center bg-transparent">
+                            <div className="flex-none md:flex-1 overflow-visible md:overflow-y-auto p-4 md:p-6 space-y-4 custom-scrollbar min-w-0">
+                                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 bg-transparent">
                                     <span className="text-xs font-bold text-slate-450 uppercase font-mono tracking-wider flex items-center gap-2">
                                         <Tags size={14} className="text-mystic-accent" />
                                         <span>Danh sách cấu hình các trường ({activeDesignerSchema.fields?.length || 0})</span>
@@ -445,7 +445,7 @@ export const SchemaDesignerScreen: React.FC<NavigationProps> = ({ onNavigate }) 
                                             </div>
 
                                             {/* Inputs for fields */}
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3.5">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
                                                 {/* Label */}
                                                 <div className="space-y-1">
                                                     <span className="text-[9px] text-slate-500 uppercase font-mono font-bold">Nhãn Hiển Thị (Label)</span>

@@ -576,7 +576,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
   ] as const;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-6 lg:p-10 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-stretch md:items-center justify-center p-0 md:p-6 lg:p-10 overflow-hidden">
       {/* Background Layer mimicking the menu background */}
       {bgImage && (
         <>
@@ -598,27 +598,27 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.98, y: 10 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="flex flex-row h-full w-full max-w-7xl bg-white/95 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-2xl md:rounded-[32px] shadow-2xl overflow-hidden backdrop-blur-xl relative z-10"
+        className="flex flex-col md:flex-row h-full w-full max-w-7xl bg-white/95 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-none md:rounded-[32px] shadow-2xl overflow-hidden backdrop-blur-xl relative z-10 min-w-0"
       >
         {/* Sidebar Navigation */}
-        <div className="w-56 md:w-64 lg:w-80 flex flex-col bg-stone-50/50 dark:bg-slate-950/50 border-r border-stone-200 dark:border-slate-800/80 p-4 md:p-6 lg:p-8 shrink-0">
-          <div className="flex items-center gap-3 mb-6 md:mb-10">
+        <div className="w-full md:w-64 lg:w-80 flex flex-col bg-stone-50/50 dark:bg-slate-950/50 border-b md:border-b-0 md:border-r border-stone-200 dark:border-slate-800/80 p-3 sm:p-4 md:p-6 lg:p-8 shrink-0 min-w-0 max-h-[42dvh] md:max-h-none overflow-y-auto md:overflow-visible custom-scrollbar">
+          <div className="flex items-center gap-3 mb-3 md:mb-10 min-w-0">
             <div className="w-10 h-10 rounded-xl bg-mystic-accent/20 border border-mystic-accent/30 flex items-center justify-center text-mystic-accent shadow-[0_0_15px_rgba(56,189,248,0.3)]">
               <Sliders className="w-5 h-5" />
             </div>
-            <div>
-              <h2 className="text-lg md:text-xl font-bold text-slate-100 tracking-wide">Cấu Hình</h2>
+            <div className="min-w-0">
+              <h2 className="text-lg md:text-xl font-bold text-slate-100 tracking-wide truncate">Cấu Hình</h2>
               <p className="text-xs md:text-[10px] text-mystic-accent/70 uppercase tracking-widest font-black">Ark V6 System</p>
             </div>
           </div>
 
           {/* Persistent Sidebar Tabs (PC Style) */}
-          <div className="flex flex-col gap-2 relative">
+          <div className="flex flex-row md:flex-col gap-2 relative overflow-x-auto md:overflow-visible pb-1 md:pb-0 no-scrollbar">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative z-10 text-sm md:text-base cursor-pointer ${
+                className={`flex shrink-0 md:shrink items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 rounded-xl transition-all duration-300 relative z-10 text-sm md:text-base cursor-pointer ${
                   activeTab === tab.id 
                     ? 'text-white font-bold' 
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 font-medium'
@@ -637,11 +637,11 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
             ))}
           </div>
 
-          <div className="mt-auto flex flex-col gap-3 pt-8">
+          <div className="mt-3 md:mt-auto flex flex-row md:flex-col gap-2 md:gap-3 pt-3 md:pt-8">
             <Button 
                 variant="ghost" 
                 onClick={handleResetFactory}
-                className="w-full text-red-400 hover:text-red-300 border border-red-900/30 hover:border-red-500/50 hover:bg-red-500/10 transition-all font-medium justify-center h-12 rounded-xl"
+                className="w-full text-red-400 hover:text-red-300 border border-red-900/30 hover:border-red-500/50 hover:bg-red-500/10 transition-all font-medium justify-center h-11 md:h-12 rounded-xl text-xs md:text-sm"
             >
                 Khôi phục Mặc định
             </Button>
@@ -649,7 +649,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
                 variant="primary" 
                 onClick={handleSave}
                 disabled={isSaving}
-                className="w-full bg-mystic-accent hover:bg-mystic-accent/90 text-slate-950 font-bold border-none shadow-[0_0_20px_rgba(56,189,248,0.4)] justify-center h-12 rounded-xl"
+                className="w-full bg-mystic-accent hover:bg-mystic-accent/90 text-slate-950 font-bold border-none shadow-[0_0_20px_rgba(56,189,248,0.4)] justify-center h-11 md:h-12 rounded-xl text-xs md:text-sm"
             >
                 {isSaving ? 'Đang lưu...' : (fromGame ? 'Lưu & Quay Lại' : 'Lưu & Đóng')}
             </Button>
@@ -657,10 +657,10 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-h-0 bg-stone-100/30 dark:bg-slate-900/30 relative">
+        <div className="flex-1 flex flex-col min-h-0 min-w-0 bg-stone-100/30 dark:bg-slate-900/30 relative">
           
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8 lg:p-12">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar p-4 md:p-8 lg:p-12 min-w-0">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -668,14 +668,14 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
-                className="max-w-3xl mx-auto space-y-8 pb-32 md:pb-12"
+                className="max-w-3xl mx-auto space-y-8 pb-32 md:pb-12 min-w-0"
               >
                 {/* 1. HỆ THỐNG AI */}
                 {activeTab === 'general' && (
                   <div className="space-y-8">
                     <div className="space-y-2 flex items-start justify-between flex-wrap gap-4">
                       <div>
-                        <h3 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                        <h3 className="text-xl md:text-2xl font-bold text-slate-100 flex items-start md:items-center gap-3 break-words">
                           <Sparkles className="text-mystic-accent" /> Mô Hình Trí Tuệ Nhân Tạo
                         </h3>
                         <p className="text-sm text-slate-400">Tùy chỉnh "bộ não" của hệ thống cho các xử lý nội tại.</p>
@@ -834,7 +834,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
                 {activeTab === 'display' && (
                   <div className="space-y-8">
                     <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                      <h3 className="text-xl md:text-2xl font-bold text-slate-100 flex items-start md:items-center gap-3 break-words">
                         <Monitor className="text-mystic-accent" /> Hiển Thị & Giao Diện
                       </h3>
                       <p className="text-sm text-slate-400">Điều chỉnh trải nghiệm nhìn phù hợp với cá nhân.</p>
@@ -1025,7 +1025,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
                 {activeTab === 'game' && (
                   <div className="space-y-8">
                     <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                      <h3 className="text-xl md:text-2xl font-bold text-slate-100 flex items-start md:items-center gap-3 break-words">
                         <Palette className="text-mystic-accent" /> Thông Số Trò Chơi
                       </h3>
                       <p className="text-sm text-slate-400">Các quy tắc tương tác với môi trường mô phỏng.</p>
@@ -1127,7 +1127,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
                 {activeTab === 'advanced' && (
                   <div className="space-y-8">
                     <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                      <h3 className="text-xl md:text-2xl font-bold text-slate-100 flex items-start md:items-center gap-3 break-words">
                         <Shield className="text-mystic-accent" /> An Toàn & Lọc Nội Dung
                       </h3>
                       <p className="text-sm text-slate-400">Kiểm soát các giới hạn AI và mã kịch bản thực thi.</p>
@@ -1183,7 +1183,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ onNavigate, fromGame })
                 {activeTab === 'api' && (
                   <div className="space-y-8">
                     <div className="space-y-2">
-                      <h3 className="text-2xl font-bold text-slate-100 flex items-center gap-3">
+                      <h3 className="text-xl md:text-2xl font-bold text-slate-100 flex items-start md:items-center gap-3 break-words">
                         <Globe className="text-mystic-accent" /> Cấu Hình Mạng & API
                       </h3>
                       <p className="text-sm text-slate-400">Cấu hình kết nối đến các nhà cung cấp AI ngoài hệ thống.</p>
