@@ -9,6 +9,11 @@ import App from './App';
 import { ThemeProvider } from './src/context/ThemeContext';
 import './src/services/log/logService'; // Initialize log capturing
 import './src/services/api/tavoApi'; // Initialize Tavo API
+import { registerSW } from 'virtual:pwa-register';
+
+if ('serviceWorker' in navigator) {
+  registerSW({ immediate: true });
+}
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

@@ -18,7 +18,7 @@ export default defineConfig({
         description: 'Chơi game nhập vai với AI',
         theme_color: '#0f172a',
         background_color: '#020617',
-        display: 'standalone',
+        display: 'fullscreen',
         icons: [
           {
             src: '/ark-icon-512.png',
