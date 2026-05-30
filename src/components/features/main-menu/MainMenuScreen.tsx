@@ -235,7 +235,10 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
   };
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      setToast({ show: true, message: "Để cài đặt: Bấm 'Share/Chia sẻ' (iOS) hoặc 'Menu' (Android) > 'Thêm vào màn hình chính'" });
+      return;
+    }
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
@@ -426,16 +429,14 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
               <span className="text-[11px] font-bold uppercase tracking-wider">Ảnh nền</span>
           </button>
 
-          {isInstallable && (
-            <button 
-              onClick={handleInstallClick}
-              className="flex items-center gap-2 px-4 py-2.5 bg-mystic-accent/20 hover:bg-mystic-accent/40 rounded-xl text-mystic-accent shadow-lg backdrop-blur-md border border-mystic-accent/50 transition-all active:scale-95 group"
-              title="Cài đặt Ứng dụng"
-            >
-                <DownloadCloud size={16} />
-                <span className="text-[11px] font-bold uppercase tracking-wider">Cài Đặt App</span>
-            </button>
-          )}
+          <button 
+            onClick={handleInstallClick}
+            className="flex items-center gap-2 px-4 py-2.5 bg-mystic-accent/20 hover:bg-mystic-accent/40 rounded-xl text-mystic-accent shadow-lg backdrop-blur-md border border-mystic-accent/50 transition-all active:scale-95 group"
+            title="Cài đặt vào Màn hình chính"
+          >
+              <Download size={16} />
+              <span className="text-[11px] font-bold uppercase tracking-wider">Cài Đặt App</span>
+          </button>
 
           {bgImage && (
             <div className="flex gap-1.5">
