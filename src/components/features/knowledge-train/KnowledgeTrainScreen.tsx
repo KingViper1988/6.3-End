@@ -45,8 +45,12 @@ const chunkTextSmart = (text: string, wordsPerChunk: number, overlapWords: numbe
     if (stepSize <= 0) {
       i = limit;
     } else {
-      i = limit - overlapWords;
-      if (i < 0) i = 0;
+      const nextI = limit - overlapWords;
+      if (nextI <= i) {
+        i = limit; // Force advance to the chunk's end to avoid infinite loop
+      } else {
+        i = nextI;
+      }
     }
   }
   return chunks;
@@ -165,7 +169,10 @@ export default function KnowledgeTrainScreen({ onNavigate }: NavigationProps) {
   };
 
   const addLog = (msg: string) => {
-    setLogs(prev => [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`]);
+    setLogs(prev => {
+      const newLogs = [...prev, `[${new Date().toLocaleTimeString()}] ${msg}`];
+      return newLogs.length > 100 ? newLogs.slice(newLogs.length - 100) : newLogs;
+    });
   };
 
   const startTraining = async () => {
@@ -239,6 +246,9 @@ export default function KnowledgeTrainScreen({ onNavigate }: NavigationProps) {
 
       // Loop over parent chunks
       for (let pIdx = 0; pIdx < parentChunks.length; pIdx++) {
+        // Yield to main thread to prevent UI freezing and tab crash
+        await new Promise(resolve => setTimeout(resolve, 0));
+
         if (isCancelledRef.current) {
           addLog("🛑 Tiến trình training đã bị dừng bởi người dùng.");
           break;
