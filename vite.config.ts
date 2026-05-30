@@ -9,6 +9,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
+      includeAssets: ['ark-icon-512.png', 'zlp-1779461952269.jpg'],
       devOptions: {
         enabled: true
       },
@@ -23,12 +25,14 @@ export default defineConfig({
           {
             src: '/ark-icon-512.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'any'
           },
           {
             src: '/ark-icon-512.png',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       },
