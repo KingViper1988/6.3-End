@@ -113,9 +113,9 @@ const GameplayScreen: React.FC<NavigationProps> = ({ onNavigate, activeWorld, on
   const activeChoices = (lastMessage?.role === 'model' && lastMessage.choices) ? lastMessage.choices : [];
 
   return (
-    <div className="flex h-full w-full bg-stone-300 dark:bg-mystic-900 font-sans overflow-hidden">
+    <div className="flex h-full min-h-0 w-full bg-stone-300 dark:bg-mystic-900 font-sans overflow-hidden">
         {/* LEFT COLUMN */}
-        <div className="flex-1 flex flex-col h-full relative z-10 min-w-0">
+        <div className="flex-1 flex flex-col h-full min-h-0 relative z-10 min-w-0">
             <GameplayHUD 
                 activeWorld={activeWorld} 
                 turnCount={turnCount} 
@@ -144,7 +144,7 @@ const GameplayScreen: React.FC<NavigationProps> = ({ onNavigate, activeWorld, on
             />
 
             {/* Input Area ... (Same as before) */}
-            <div className="bg-stone-300 dark:bg-mystic-900 border-t border-stone-400 dark:border-slate-800 z-20 shrink-0 flex flex-col shadow-[0_-5px_15px_rgba(0,0,0,0.05)] dark:shadow-[0_-5px_15px_rgba(0,0,0,0.2)]">
+            <div className="bg-stone-300/95 dark:bg-mystic-900/95 border-t border-stone-400 dark:border-slate-800 z-20 shrink-0 flex flex-col shadow-[0_-5px_15px_rgba(0,0,0,0.05)] dark:shadow-[0_-5px_15px_rgba(0,0,0,0.2)]">
                 {/* Game Input Component */}
                 <GameInput 
                     ref={gameInputRef}
@@ -239,7 +239,7 @@ const GameplayScreen: React.FC<NavigationProps> = ({ onNavigate, activeWorld, on
                     <motion.div
                         initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
                         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-4/5 max-w-sm bg-stone-300 dark:bg-mystic-900 z-50 border-l border-stone-400 dark:border-slate-700"
+                        className="fixed top-0 right-0 h-full w-[92vw] max-w-sm bg-stone-300 dark:bg-mystic-900 z-50 border-l border-stone-400 dark:border-slate-700 shadow-2xl"
                     >
                         {renderSidebarContent()}
                     </motion.div>

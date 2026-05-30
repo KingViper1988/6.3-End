@@ -88,6 +88,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       if (shouldScaleToPC) {
         docEl.classList.add('desktop-site-mode');
+        docEl.classList.remove('mobile-interface-mode');
         // Inject desktop mode style overrides!
         const styleId = 'desktop-site-overrides-style';
         let styleEl = document.getElementById(styleId) as HTMLStyleElement | null;
@@ -224,15 +225,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
 
         if (resolvedInterfaceMode === 'mobile') {
-          docEl.style.zoom = '0.5';
-          if (viewportMeta) {
-            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.5, minimum-scale=0.5, maximum-scale=0.5, user-scalable=no');
-          }
+          docEl.classList.add('mobile-interface-mode');
         } else {
-          docEl.style.zoom = '1.0';
-          if (viewportMeta) {
-            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
-          }
+          docEl.classList.remove('mobile-interface-mode');
+        }
+
+        docEl.style.zoom = '1.0';
+        if (viewportMeta) {
+          viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no');
         }
 
         docEl.style.transform = '';

@@ -319,31 +319,31 @@ export const DynamicHUD: React.FC<DynamicHUDProps> = ({ worldData, gameTime, tur
         <div className={`relative w-full z-20 backdrop-blur-xl shadow-xl transition-all duration-700 bg-gradient-to-b ${environmentTheme.headerGradient} border-b border-white/5`}>
             
             {/* Top Bar - Beautiful Compact HUD Overlay */}
-            <div className="px-4 py-2.5 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4 flex-1 min-w-0">
+            <div className="px-2.5 sm:px-4 py-2 flex items-center justify-between gap-2 sm:gap-4">
+                <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                     
                     {/* Character Bio Avatar & Vitals status */}
                     <button 
                         onClick={() => setExpanded(!expanded)} 
-                        className="flex items-center gap-3 group cursor-pointer shrink-0 rounded-xl hover:bg-white/5 p-1 -ml-1 transition-all"
+                        className="flex items-center gap-2 sm:gap-3 group cursor-pointer shrink-0 rounded-xl hover:bg-white/5 p-1 -ml-1 transition-all max-w-[52vw] sm:max-w-none"
                     >
                         <div className="relative">
                             {/* Animated ring glow indicator */}
                             <div className={`absolute -inset-0.5 rounded-full blur-sm leading-none ${characterAura.pulseClass}`} />
                             
-                            <div className={`relative w-11 h-11 rounded-full bg-slate-950 flex items-center justify-center border-2 ${characterAura.borderClass} group-hover:border-white transition-all overflow-hidden shadow-inner`}>
+                            <div className={`relative w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950 flex items-center justify-center border-2 ${characterAura.borderClass} group-hover:border-white transition-all overflow-hidden shadow-inner`}>
                                 {worldData.player.avatar ? (
                                     <img src={worldData.player.avatar} alt={worldData.player.name} className="w-full h-full object-cover scale-105" />
                                 ) : (
-                                    <User size={22} className="text-slate-400" />
+                                    <User size={18} className="text-slate-400" />
                                 )}
                             </div>
                         </div>
                         <div className="flex flex-col items-start leading-tight">
-                            <span className="text-xs font-black text-slate-100 group-hover:text-sky-300 transition-colors tracking-widest uppercase font-sans">
+                            <span className="text-[11px] sm:text-xs font-black text-slate-100 group-hover:text-sky-300 transition-colors tracking-widest uppercase font-sans">
                                 {worldData.player.name}
                             </span>
-                            <span className="text-[10px] font-semibold text-slate-400 max-w-[130px] md:max-w-[210px] truncate flex items-center gap-1.5 mt-0.5">
+                            <span className="text-[10px] font-semibold text-slate-400 max-w-[110px] sm:max-w-[130px] md:max-w-[210px] truncate flex items-center gap-1.5 mt-0.5">
                                 <Heart size={10} className="text-rose-500 animate-pulse fill-rose-500/20" />
                                 {quickStatus}
                             </span>
@@ -353,7 +353,7 @@ export const DynamicHUD: React.FC<DynamicHUDProps> = ({ worldData, gameTime, tur
                     <div className="h-8 w-px bg-white/10 hidden md:block" />
 
                     {/* Compact Interactive Stats Carousel */}
-                    <div className="flex items-center gap-2.5 overflow-x-auto select-none no-scrollbar flex-1 pb-1 md:pb-0">
+                    <div className="hidden min-[420px]:flex items-center gap-2.5 overflow-x-auto select-none no-scrollbar flex-1 pb-1 md:pb-0">
                         {/* Environmental Card */}
                         <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-black/40 border border-white/5 shrink-0 shadow-inner">
                             {environmentTheme.timeIcon}
@@ -398,7 +398,7 @@ export const DynamicHUD: React.FC<DynamicHUDProps> = ({ worldData, gameTime, tur
                 <div className="flex items-center gap-2 shrink-0">
                     <button 
                          onClick={() => setExpanded(!expanded)}
-                         className={`px-3 py-1.5 rounded-xl border flex items-center gap-1 text-[11px] font-mono tracking-widest uppercase transition-all duration-300 hover:scale-105 active:scale-95 ${
+                         className={`min-h-9 min-w-10 px-2 sm:px-3 py-1.5 rounded-xl border flex items-center justify-center gap-1 text-[11px] font-mono tracking-widest uppercase transition-all duration-300 hover:scale-105 active:scale-95 ${
                              expanded 
                              ? `${environmentTheme.accentColor} bg-white/10 ${environmentTheme.accentBorder} ${environmentTheme.glowShadow}` 
                              : 'bg-black/35 text-slate-300 border-white/10 hover:bg-slate-800/55 hover:border-slate-700'
@@ -423,10 +423,10 @@ export const DynamicHUD: React.FC<DynamicHUDProps> = ({ worldData, gameTime, tur
                         transition={{ duration: 0.35, ease: "easeInOut" }}
                         className="overflow-hidden border-t border-white/5 bg-slate-950/95"
                     >
-                        <div className="flex flex-col h-full max-h-[75vh] md:max-h-[500px]">
+                        <div className="flex flex-col h-full max-h-[70dvh] md:max-h-[500px]">
                             
                             {/* Tab Selection Row */}
-                            <div className="flex px-4 pt-1 gap-1 overflow-x-auto no-scrollbar border-b border-white/5 bg-black/40">
+                            <div className="flex px-2 sm:px-4 pt-1 gap-1 overflow-x-auto no-scrollbar border-b border-white/5 bg-black/40">
                                 {[
                                     { id: 'status', label: 'Trạng thái', icon: <Activity size={12} /> },
                                     { id: 'inventory', label: 'Hành lý', icon: <Backpack size={12} /> },
@@ -440,7 +440,7 @@ export const DynamicHUD: React.FC<DynamicHUDProps> = ({ worldData, gameTime, tur
                                             setActiveTab(tab.id as any);
                                             setSelectedItem(null);
                                         }}
-                                        className={`flex items-center gap-1.5 px-4 py-3 text-[10px] font-bold uppercase tracking-wider rounded-t-xl transition-all border-b-2 whitespace-nowrap ${
+                                        className={`flex items-center gap-1.5 px-3 sm:px-4 py-3 text-[10px] font-bold uppercase tracking-wider rounded-t-xl transition-all border-b-2 whitespace-nowrap ${
                                             activeTab === tab.id 
                                             ? `text-white border-sky-400 bg-sky-500/5` 
                                             : 'text-slate-400 border-transparent hover:bg-white/5 hover:text-slate-200'

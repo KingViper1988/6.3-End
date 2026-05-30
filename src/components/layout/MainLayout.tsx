@@ -20,8 +20,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         Áp dụng safe-area-padding từ MOBILE_CONFIG.
       */}
       <div 
-        className="relative w-full h-full bg-stone-300 dark:bg-mystic-950 text-stone-900 dark:text-slate-200 overflow-hidden selection:bg-mystic-accent selection:text-mystic-900 font-sans transition-colors duration-300"
+        className="relative w-full h-full min-h-[100dvh] bg-stone-300 dark:bg-mystic-950 text-stone-900 dark:text-slate-200 overflow-hidden selection:bg-mystic-accent selection:text-mystic-900 font-sans transition-colors duration-300"
         style={{ 
+          paddingTop: isMobile ? 'env(safe-area-inset-top)' : 0,
           paddingBottom: isMobile ? MOBILE_CONFIG.safeAreaPadding : 0
         }}
       >
@@ -43,7 +44,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: visualEffects ? 1 : 0 }}
-          className="relative z-10 w-full h-full flex flex-col"
+          className="relative z-10 w-full h-full min-h-0 flex flex-col"
         >
           {children}
         </motion.main>
