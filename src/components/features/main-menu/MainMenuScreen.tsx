@@ -74,6 +74,7 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
   // PWA Install State
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  const [isIframe, setIsIframe] = useState(false);
 
   // Background Image State
   const [bgImage, setBgImage] = useState<string | null>("https://i.ibb.co/cS6YkxK1/f0c7caebe311a0c1e0e5e7a3ca5599e7.jpg");
@@ -83,6 +84,8 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
 
   // Load Background Image and Settings from IndexedDB
   useEffect(() => {
+    setIsIframe(window.self !== window.top);
+
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -240,16 +243,32 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
   };
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) {
-      setToast({ show: true, message: "Để cài đặt: Bấm 'Share/Chia sẻ' (iOS) hoặc 'Menu' (Android) > 'Thêm vào màn hình chính'" });
+    if (isIframe) {
+      setToast({ show: true, message: "Đang mở app ở tab mới để kích hoạt cài đặt tự động..." });
+      setTimeout(() => {
+        window.open(window.location.href, "_blank");
+      }, 1000);
       return;
     }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      setIsInstallable(false);
+
+    if (!deferredPrompt) {
+      setToast({ 
+        show: true, 
+        message: "Chrome / Safari yêu cầu tương tác: Xin vui lòng bấm dấu 3 chấm góc dưới/trên > 'Thêm vào màn hình chính' hoặc 'Cài đặt ứng dụng'!" 
+      });
+      return;
     }
-    setDeferredPrompt(null);
+    
+    try {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setIsInstallable(false);
+      }
+      setDeferredPrompt(null);
+    } catch (e) {
+      console.error("Lỗi kích hoạt cài đặt tự động:", e);
+    }
   };
 
   // --- Load Game Logic ---
@@ -456,11 +475,17 @@ const MainMenuScreen: React.FC<NavigationProps> = ({ onNavigate, onGameStart }) 
 
           <button 
             onClick={handleInstallClick}
-            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-500/20 hover:bg-emerald-500/40 rounded-xl text-emerald-400 shadow-lg backdrop-blur-md border border-emerald-500/50 transition-all active:scale-95 group"
-            title="Cài đặt vào Màn hình chính"
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl shadow-lg backdrop-blur-md border transition-all active:scale-95 group ${
+              isIframe 
+                ? 'bg-amber-500/20 hover:bg-amber-500/40 text-amber-400 border-amber-500/50' 
+                : 'bg-emerald-500/20 hover:bg-emerald-500/40 text-emerald-400 border-emerald-500/50'
+            }`}
+            title={isIframe ? "Mở tab mới chính chủ để cài đặt app tự động" : "Tải app về máy / Cài đặt phím tắt PWA"}
           >
               <Download size={16} />
-              <span className="text-[11px] font-bold uppercase tracking-wider">Cài Đặt App</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider">
+                {isIframe ? "Cài Đặt (Mở Tab)" : "Cài Đặt App"}
+              </span>
           </button>
       </div>
 
