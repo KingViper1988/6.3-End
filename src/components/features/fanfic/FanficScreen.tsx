@@ -76,7 +76,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
   const [workFilterGenre, setWorkFilterGenre] = useState('All');
   const [workSortBy, setWorkSortBy] = useState<'title' | 'chars_desc' | 'chars_asc'>('title');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [isAnalysisCollapsed, setIsAnalysisCollapsed] = useState(false);
+  const [isAnalysisCollapsed, setIsAnalysisCollapsed] = useState(true);
   const [aiModel, setAiModel] = useState<string>('gemini-3.1-pro-preview');
   const [settings, setSettings] = useState<AppSettings | null>(null);
 
@@ -642,7 +642,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
   };
 
   const renderPlayerTab = () => (
-    <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-4">
       <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-0.5 mb-1">
         <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2" style={{ fontFamily: 'Arial', lineHeight: '18px' }}>
           <User size={18} className="text-mystic-accent" /> Thiết lập Nhân Vật Chính
@@ -700,7 +700,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
 
   const renderWorldTab = () => {
     return (
-      <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar flex flex-col h-full">
+      <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pr-1 md:pr-2 custom-scrollbar flex flex-col min-h-full pb-4">
         <div className="border-b border-slate-200 dark:border-slate-700 pb-2 mb-2 flex flex-col md:flex-row md:items-center justify-between gap-3 shrink-0">
           <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2" style={{ fontFamily: 'Arial', lineHeight: '18px' }}>
             <Compass size={18} className="text-mystic-accent" /> Không Gian Thiết Lập Thế Giới Đồng Nhân
@@ -785,7 +785,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                 <h4 className="font-bold text-sm text-slate-800 dark:text-slate-200 mb-4 uppercase tracking-wider flex items-center gap-2">
                   <Globe2 size={16} className="text-mystic-accent" /> Thông Tin Cơ Bản đồng nhân
                 </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <InputGroup 
                     label="Tên thế giới" 
                     value={state.world.worldName} 
@@ -1005,7 +1005,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
               </div>
 
               <div className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 rounded-xl p-4 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <TextAreaGroup 
                     label="Địa Lý & Khí Hậu Vùng Miền" 
                     value={state.world.geography || ''} 
@@ -1096,7 +1096,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
 
 
   const renderEntitiesTab = () => (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 h-full flex flex-col">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 min-h-full flex flex-col pb-4">
        <h3 className="text-base font-bold text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700 pb-0.5 mb-1 flex items-center gap-2" style={{ fontFamily: 'Arial', lineHeight: '18px' }}>
           <Users size={18} className="text-mystic-accent" /> Danh Sách Thực Thể & NPC
        </h3>
@@ -1109,7 +1109,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
           </Button>
        </div>
 
-       <div className="flex-1 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-4 pb-4 custom-scrollbar pr-2">
+       <div className="flex-1 min-h-0 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 pb-4 custom-scrollbar pr-1 md:pr-2">
             {state.entities.map(ent => (
                 <div key={ent.id} className="bg-stone-100 dark:bg-slate-800 border border-stone-400 dark:border-slate-700 p-4 rounded-lg hover:border-mystic-accent/50 transition-colors group relative">
                     <div className="flex justify-between items-start mb-2">
@@ -1171,32 +1171,32 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
         className="hidden" 
       />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-2 sm:p-4 md:p-8 relative z-10 w-full overflow-hidden mt-safe">
+      <div className="flex-1 min-h-0 flex flex-col items-center justify-start md:justify-center p-2 sm:p-4 md:p-8 relative z-10 w-full overflow-y-auto overflow-x-hidden custom-scrollbar mt-safe">
           {/* Header */}
-          <div className="w-full max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 mt-2 xl:mb-6">
-            <div className="flex items-center gap-4">
-              <button onClick={() => onNavigate(GameState.MENU)} className="text-slate-600 dark:text-slate-300 hover:text-mystic-accent cursor-pointer transition-colors flex items-center gap-2 bg-white/80 dark:bg-slate-900/80 p-2.5 rounded-xl backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-800">
+          <div className="w-full max-w-6xl flex flex-row items-center justify-between gap-2 mb-2 md:mb-4 mt-1 md:mt-2 xl:mb-6 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+              <button onClick={() => onNavigate(GameState.MENU)} className="text-slate-600 dark:text-slate-300 hover:text-mystic-accent cursor-pointer transition-colors flex items-center gap-2 bg-white/80 dark:bg-slate-900/80 p-2 sm:p-2.5 rounded-xl backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-800 shrink-0">
                   <ArrowLeft size={18} /> <span className="hidden sm:inline font-bold uppercase tracking-wider text-xs">Quay lại</span>
               </button>
-              <h2 className="text-xl md:text-2xl font-black text-slate-800 dark:text-white drop-shadow-md tracking-[0.2em] uppercase font-serif">
+              <h2 className="text-lg md:text-2xl font-black text-slate-800 dark:text-white drop-shadow-md tracking-[0.16em] sm:tracking-[0.2em] uppercase font-serif truncate">
                 Đồng Nhân
               </h2>
             </div>
-            <div className="flex justify-end gap-2 shrink-0">
-              <button onClick={handleImportClick} title="Nhập cấu hình" className="text-slate-600 dark:text-slate-300 hover:text-mystic-accent cursor-pointer transition-colors flex items-center gap-1.5 bg-white/80 dark:bg-slate-900/80 p-2 px-3 rounded-xl backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-wider">
+            <div className="flex justify-end gap-1.5 sm:gap-2 shrink-0">
+              <button onClick={handleImportClick} title="Nhập cấu hình" className="text-slate-600 dark:text-slate-300 hover:text-mystic-accent cursor-pointer transition-colors flex items-center gap-1.5 bg-white/80 dark:bg-slate-900/80 p-2 sm:px-3 rounded-xl backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-wider">
                   <Upload size={16} /> <span className="hidden sm:inline">Nhập Config</span>
               </button>
-              <button onClick={handleExportWorld} title="Xuất cấu hình" className="text-slate-600 dark:text-slate-300 hover:text-mystic-accent cursor-pointer transition-colors flex items-center gap-1.5 bg-white/80 dark:bg-slate-900/80 p-2 px-3 rounded-xl backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-wider">
+              <button onClick={handleExportWorld} title="Xuất cấu hình" className="text-slate-600 dark:text-slate-300 hover:text-mystic-accent cursor-pointer transition-colors flex items-center gap-1.5 bg-white/80 dark:bg-slate-900/80 p-2 sm:px-3 rounded-xl backdrop-blur-md shadow-sm border border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-wider">
                   <Download size={16} /> <span className="hidden sm:inline">Xuất Config</span>
               </button>
             </div>
           </div>
 
           {/* Main Wizard Card */}
-          <div className="w-full max-w-5xl h-fit min-h-[580px] md:min-h-[660px] lg:h-[min(720px,82vh)] flex flex-col bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl min-h-0 mx-auto overflow-hidden">
+          <div className="w-full max-w-5xl flex-1 min-h-0 md:max-h-[min(760px,82dvh)] flex flex-col bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl md:rounded-3xl shadow-2xl mx-auto overflow-hidden">
             
             {/* Top Concept & Knowledge Bar */}
-            <div className="flex flex-col gap-4 p-4 md:p-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
+            <div className="flex flex-col gap-3 md:gap-4 p-3 md:p-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  {/* Original work IP/Name input */}
                  <div className="flex-1 w-full flex flex-col gap-2">
@@ -1209,7 +1209,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                              <FileText size={12}/> {isAnalysisCollapsed ? 'Phân Tích Tác Phẩm' : 'Ẩn Phân Tích'}
                          </button>
                      </div>
-                     <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-2xl p-2 border border-slate-200 dark:border-slate-800 focus-within:border-mystic-accent/50 focus-within:shadow-[0_0_15px_rgba(56,189,248,0.15)] flex gap-3 items-center transition-all">
+                     <div className="w-full bg-slate-50 dark:bg-slate-900 rounded-xl md:rounded-2xl p-2 border border-slate-200 dark:border-slate-800 focus-within:border-mystic-accent/50 focus-within:shadow-[0_0_15px_rgba(56,189,248,0.15)] flex gap-2 md:gap-3 items-center transition-all">
                         <div className="p-2 bg-mystic-accent/10 rounded-xl">
                             <Wand2 className="text-mystic-accent shrink-0" size={20} />
                         </div>
@@ -1227,7 +1227,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                      <div className="flex items-center px-1">
                          <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Train Data / Knowledge</span>
                      </div>
-                     <div className="w-full h-[54px] bg-slate-50 dark:bg-slate-900 rounded-2xl p-2 border border-slate-200 dark:border-slate-800 flex items-center gap-3 transition-all">
+                     <div className="w-full h-[46px] sm:h-[54px] bg-slate-50 dark:bg-slate-900 rounded-xl md:rounded-2xl p-2 border border-slate-200 dark:border-slate-800 flex items-center gap-2 md:gap-3 transition-all">
                         <input 
                           type="file" 
                           id="knowledge-file-fanfic" 
@@ -1266,14 +1266,14 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                </div>
 
                {/* Action buttons row */}
-               <div className="flex flex-wrap items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+               <div className="grid grid-cols-1 min-[380px]:grid-cols-3 md:flex md:flex-wrap md:items-center md:justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
                  <Button 
                     variant="ghost" 
-                    className="py-2.5 px-4 text-xs bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/20 transition-all font-bold group rounded-xl" 
+                    className="w-full md:w-auto py-2 px-2 md:py-2.5 md:px-4 text-[10px] sm:text-xs bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/20 transition-all font-bold group rounded-xl" 
                     onClick={() => setShowWorkSelector(true)}
                     disabled={importedWorks.length === 0}
                  >
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs leading-tight">
                         <Clock size={14} className="group-hover:scale-110 transition-transform" />
                         Lịch Sử
                     </div>
@@ -1281,11 +1281,11 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
 
                  <Button 
                     variant="ghost" 
-                    className="py-2.5 px-5 text-xs bg-gradient-to-br from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition-all font-bold group rounded-xl" 
+                    className="w-full md:w-auto py-2 px-2 md:py-2.5 md:px-5 text-[10px] sm:text-xs bg-gradient-to-br from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30 transition-all font-bold group rounded-xl" 
                     onClick={handleAutoFillAll}
                     isLoading={state.isGenerating && !state.generatingField && !isGeneratingFromKnowledge}
                  >
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs leading-tight">
                         <Sparkles size={14} className="group-hover:rotate-12 group-hover:scale-110 transition-transform text-amber-500" />
                         Tạo Nhanh Đồng Nhân
                     </div>
@@ -1293,12 +1293,12 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
 
                  <Button 
                     variant="ghost" 
-                    className="py-2.5 px-5 text-xs bg-gradient-to-br from-emerald-500/10 to-green-500/10 hover:from-emerald-500/20 hover:to-green-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition-all font-bold group rounded-2xl disabled:opacity-50 disabled:grayscale cursor-pointer" 
+                    className="w-full md:w-auto py-2 px-2 md:py-2.5 md:px-5 text-[10px] sm:text-xs bg-gradient-to-br from-emerald-500/10 to-green-500/10 hover:from-emerald-500/20 hover:to-green-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 transition-all font-bold group rounded-xl md:rounded-2xl disabled:opacity-50 disabled:grayscale cursor-pointer" 
                     disabled={!knowledgeContent || state.isGenerating}
                     onClick={handleWorldGenFromKnowledge}
                     isLoading={isGeneratingFromKnowledge}
                  >
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-1 sm:gap-2 text-[10px] sm:text-xs leading-tight">
                         <Database size={14} className="group-hover:scale-110 transition-transform text-emerald-500" />
                         AI GEN KNOWLEDGE
                     </div>
@@ -1315,8 +1315,8 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 shrink-0"
                     >
-                        <div className="p-4 md:p-6 space-y-2">
-                            <div className="flex justify-between items-center">
+                        <div className="p-3 md:p-6 space-y-2">
+                            <div className="flex flex-col min-[380px]:flex-row min-[380px]:justify-between min-[380px]:items-center gap-2">
                                 <label className="text-xs font-bold text-mystic-accent uppercase tracking-wider">Nội dung tác phẩm gốc để phân tích</label>
                                 <div className="flex gap-2">
                                     <input type="file" ref={txtFileInputRef} onChange={handleTxtFileChange} accept=".txt" className="hidden" />
@@ -1328,7 +1328,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                                 value={originalContent}
                                 onChange={(e) => setOriginalContent(e.target.value)}
                                 placeholder="Dán nội dung truyện vào đây (tối đa vài ngàn từ) để AI phân tích..."
-                                className="w-full h-24 sm:h-32 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs text-slate-800 dark:text-slate-200 focus:border-mystic-accent focus:ring-1 focus:ring-mystic-accent outline-none resize-none custom-scrollbar"
+                                className="w-full h-20 sm:h-32 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-xs text-slate-800 dark:text-slate-200 focus:border-mystic-accent focus:ring-1 focus:ring-mystic-accent outline-none resize-none custom-scrollbar"
                             />
                             <div className="flex justify-end mt-2">
                                 <Button 
@@ -1347,21 +1347,21 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
             </AnimatePresence>
 
             {/* Horizontal Stepper (Tabs) */}
-            <div className="px-4 md:px-8 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-center bg-slate-50/50 dark:bg-slate-900/30 overflow-x-auto no-scrollbar shrink-0">
-               <div className="flex items-center gap-2 sm:gap-4 lg:gap-8 min-w-max">
+            <div className="px-2 md:px-8 py-2 md:py-4 border-b border-slate-200 dark:border-slate-800 flex justify-center bg-slate-50/50 dark:bg-slate-900/30 overflow-x-auto no-scrollbar shrink-0">
+               <div className="flex items-center gap-1 sm:gap-4 lg:gap-8 min-w-max">
                   {TABS.map((tab, idx) => {
                       const isActive = state.currentTab === tab.id;
                       return (
                           <div key={tab.id} className="flex items-center">
                               <button
                                  onClick={() => store.setTab(tab.id)}
-                                 className={`flex flex-col sm:flex-row items-center gap-2 sm:gap-3 py-2 px-3 sm:px-4 rounded-2xl transition-all duration-300 relative group ${
+                                 className={`flex flex-col sm:flex-row items-center gap-1 sm:gap-3 py-1.5 sm:py-2 px-2 sm:px-4 rounded-xl sm:rounded-2xl transition-all duration-300 relative group ${
                                      isActive 
                                          ? 'bg-mystic-accent/10 dark:bg-mystic-accent/20 text-mystic-accent border border-mystic-accent/20 shadow-sm' 
                                          : 'hover:bg-slate-200/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 border border-transparent'
                                  }`}
                               >
-                                  <div className={`p-2 rounded-xl transition-all ${isActive ? 'bg-white dark:bg-slate-900 shadow-sm text-mystic-accent' : 'group-hover:scale-110'}`}>
+                                  <div className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl transition-all ${isActive ? 'bg-white dark:bg-slate-900 shadow-sm text-mystic-accent' : 'group-hover:scale-110'}`}>
                                     <tab.icon size={18} className={isActive ? 'animate-pulse' : ''} />
                                   </div>
                                   <div className="flex flex-col items-center sm:items-start">
@@ -1379,21 +1379,21 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
             </div>
 
             {/* Stepper Content Area */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar p-4 md:p-8 relative">
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-3 md:p-8 relative overscroll-contain">
                <AnimatePresence mode="wait">
-                  {state.currentTab === 0 && <motion.div key="tab0" initial={{opacity:0, y:-10, filter: 'blur(4px)'}} animate={{opacity:1, y:0, filter: 'blur(0px)'}} exit={{opacity:0, y:10, filter: 'blur(4px)'}} transition={{ duration: 0.2 }} className="h-full max-w-4xl mx-auto">{renderPlayerTab()}</motion.div>}
-                  {state.currentTab === 1 && <motion.div key="tab1" initial={{opacity:0, y:-10, filter: 'blur(4px)'}} animate={{opacity:1, y:0, filter: 'blur(0px)'}} exit={{opacity:0, y:10, filter: 'blur(4px)'}} transition={{ duration: 0.2 }} className="h-full max-w-4xl mx-auto">{renderWorldTab()}</motion.div>}
-                  {state.currentTab === 3 && <motion.div key="tab3" initial={{opacity:0, y:-10, filter: 'blur(4px)'}} animate={{opacity:1, y:0, filter: 'blur(0px)'}} exit={{opacity:0, y:10, filter: 'blur(4px)'}} transition={{ duration: 0.2 }} className="h-full max-w-4xl mx-auto">{renderEntitiesTab()}</motion.div>}
+                  {state.currentTab === 0 && <motion.div key="tab0" initial={{opacity:0, y:-10, filter: 'blur(4px)'}} animate={{opacity:1, y:0, filter: 'blur(0px)'}} exit={{opacity:0, y:10, filter: 'blur(4px)'}} transition={{ duration: 0.2 }} className="min-h-full max-w-4xl mx-auto">{renderPlayerTab()}</motion.div>}
+                  {state.currentTab === 1 && <motion.div key="tab1" initial={{opacity:0, y:-10, filter: 'blur(4px)'}} animate={{opacity:1, y:0, filter: 'blur(0px)'}} exit={{opacity:0, y:10, filter: 'blur(4px)'}} transition={{ duration: 0.2 }} className="min-h-full max-w-4xl mx-auto">{renderWorldTab()}</motion.div>}
+                  {state.currentTab === 3 && <motion.div key="tab3" initial={{opacity:0, y:-10, filter: 'blur(4px)'}} animate={{opacity:1, y:0, filter: 'blur(0px)'}} exit={{opacity:0, y:10, filter: 'blur(4px)'}} transition={{ duration: 0.2 }} className="min-h-full max-w-4xl mx-auto">{renderEntitiesTab()}</motion.div>}
                </AnimatePresence>
             </div>
             
             {/* Bottom Action Bar */}
-            <div className="p-4 md:p-6 bg-slate-50/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0 rounded-b-3xl">
+            <div className="p-3 md:p-6 bg-slate-50/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-4 shrink-0 rounded-b-2xl md:rounded-b-3xl">
                <div className="flex gap-2 w-full sm:w-auto">
                   {prevTab !== null ? (
                      <Button 
                         variant="ghost" 
-                        className="flex-1 sm:flex-none py-3 px-5 text-sm font-semibold bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl text-slate-600 dark:text-slate-300 transition-colors" 
+                        className="flex-1 sm:flex-none py-2.5 md:py-3 px-4 md:px-5 text-xs md:text-sm font-semibold bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl md:rounded-2xl text-slate-600 dark:text-slate-300 transition-colors" 
                         onClick={() => store.setTab(prevTab)}
                      >
                         Quay Lại
@@ -1405,7 +1405,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                   {nextTab !== null ? (
                      <Button 
                         variant="primary" 
-                        className="flex-1 sm:flex-none py-3 px-5 text-sm font-semibold bg-gradient-to-r from-mystic-accent/90 to-blue-600/90 text-white hover:from-mystic-accent hover:to-blue-600 rounded-2xl transition-all shadow-md cursor-pointer" 
+                        className="flex-1 sm:flex-none py-2.5 md:py-3 px-4 md:px-5 text-xs md:text-sm font-semibold bg-gradient-to-r from-mystic-accent/90 to-blue-600/90 text-white hover:from-mystic-accent hover:to-blue-600 rounded-xl md:rounded-2xl transition-all shadow-md cursor-pointer" 
                         onClick={() => store.setTab(nextTab)}
                      >
                         Tiếp Tục
@@ -1430,7 +1430,7 @@ const FanficScreen: React.FC<FanficScreenProps> = ({ onNavigate, onGameStart, in
                <div className="w-full sm:w-auto sm:min-w-[240px]">
                   <Button 
                      variant="primary" 
-                     className="w-full py-4 shadow-[0_4px_20px_rgba(56,189,248,0.25)] hover:shadow-[0_6px_25px_rgba(56,189,248,0.4)] hover:-translate-y-1 text-sm font-black uppercase tracking-widest bg-gradient-to-r from-mystic-accent to-blue-600 hover:from-blue-500 hover:to-mystic-accent transition-all disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed group rounded-2xl cursor-pointer"
+                     className="w-full py-3 md:py-4 shadow-[0_4px_20px_rgba(56,189,248,0.25)] hover:shadow-[0_6px_25px_rgba(56,189,248,0.4)] hover:-translate-y-1 text-xs md:text-sm font-black uppercase tracking-widest bg-gradient-to-r from-mystic-accent to-blue-600 hover:from-blue-500 hover:to-mystic-accent transition-all disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed group rounded-xl md:rounded-2xl cursor-pointer"
                      disabled={state.entities.length < 1 || !state.player.name || !state.world.worldName}
                      onClick={handleStartGame}
                   >
